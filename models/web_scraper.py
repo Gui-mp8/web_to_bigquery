@@ -25,10 +25,10 @@ class WebScraper():
                         'upgrade-insecure-requests': '1',
                         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 OPR/95.0.0.0'
                         }
-        
+
     def response(self) -> requests.Response:
         return requests.get(url=self.url, headers=self.headers)
-    
+
     def soup(self) -> BeautifulSoup:
         return BeautifulSoup(self.response().content, 'html.parser')
 
@@ -39,33 +39,33 @@ class WebScraper():
 
         for item in items:
             game_name = item.find('a', class_='b')
-            
+
             if game_name is not None and game_name['target'] == '_blank':
                 game_dict = {'game_name': str(game_name.string)}  # Create a new dictionary for each game
                 game_dict_list.append(game_dict)  # Append the dictionary to the list
-            
+
             elif 'data-sort' in item.attrs:
                 value = item.get_text(strip=True)
-                
+
                 if value.startswith('-') and value.endswith('%'):
                     if len(game_dict_list) > 0 and 'discount' not in game_dict_list[-1]:
                         game_dict_list[-1]['discount'] = str(value)
                     else:
                         game_dict = {'discount': str(value)}
                         game_dict_list.append(game_dict)
-                
+
                 elif value.startswith('R$'):
                     if len(game_dict_list) > 0 and 'price' not in game_dict_list[-1]:
                         game_dict_list[-1]['price'] = str(value)
                     else:
                         game_dict = {'price': str(value)}
                         game_dict_list.append(game_dict)
-                
+
                 elif not value.startswith('-') and value.endswith('%'):
                     if len(game_dict_list) > 0 and 'rating' not in game_dict_list[-1]:
                         game_dict_list[-1]['rating'] = str(value)
                     else:
                         game_dict = {'rating': str(value)}
                         game_dict_list.append(game_dict)
-        
+
         return game_dict_list
