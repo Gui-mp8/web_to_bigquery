@@ -1,3 +1,18 @@
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(message)s',
+    handlers=[
+        logging.FileHandler('app.log'),
+        logging.StreamHandler()
+    ]
+)
+
+# Create a logger instance
+logger = logging.getLogger(__name__)
+
 import requests
 from requests.packages.urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
@@ -12,25 +27,11 @@ class WebScraper():
         self.url = url
         self.session = None
         self.headers = {
-            'Authority': 'steamdb.info',
-            'Method': 'GET',
-            'Path': '/sales/',
-            'Scheme': 'https',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-            # 'Accept-Encoding': 'gzip, deflate, br',
-            'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
-            'Cache-Control': 'max-age=0',
-            'Cookie': 'cf_clearance=fdH4jlhtR44hvpUP2s_WeCmpFlOL3B_cSHvKNt0Vts8-1689113498-0-160; __cf_bm=1Vp0336hjGZupSDxqHSvtwf0DVpYAp9O4qJ2CCs6jeQ-1689124210-0-ARSpUxuERmPpGQ9+Hqr48qKlzvhwV9YIB4JJ2xVKLHfSj1Q0ID0RNvqF1Vwr6vYUQNaOP3qmVcgEeaRunS7kJPo=',
-            'Sec-Ch-Ua': '"Not.A/Brand";v="8", "Chromium";v="114", "Opera";v="100"',
-            'Sec-Ch-Ua-Mobile': '?0',
-            'Sec-Ch-Ua-Platform': '"Linux"',
-            'Sec-Fetch-Dest': 'document',
-            'Sec-Fetch-Mode': 'navigate',
-            'Sec-Fetch-Site': 'cross-site',
-            'Sec-Fetch-User': '?1',
-            'Upgrade-Insecure-Requests': '1',
-            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 OPR/100.0.0.0'
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+            "cookie": "cf_chl_2=0f811a9aa1e21cc; cf_clearance=W5hoD.mM4zzqMAMgk1IutY3NkRv0flJp1ro6zd9cKQM-1689161684-0-160; __cf_bm=2RWpCjNQjXgiKKF7PQelB8fDQgvXeIr4ncKtOPIYrX0-1689164681-0-AeKP7HJ5WShG2VnaFmHwCtcGDKlbhU+lHZlY+wu4m7xcKYbJC/RmkIoBgGobHa5mqQ7lsowjjRvDbWcOqaa2Tw0=",
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 OPR/95.0.0.0"
         }
+        self.logger = logging.getLogger(__name__)
 
     def create_session(self) -> Session:
         session = self.session
@@ -79,6 +80,8 @@ class WebScraper():
                         game_dict = {'discount': str(value)}
                         game_dict_list.append(game_dict)
 
+
+
                 elif value.startswith('R$'):
                     if len(game_dict_list) > 0 and 'price' not in game_dict_list[-1]:
                         game_dict_list[-1]['price'] = str(value)
@@ -86,15 +89,15 @@ class WebScraper():
                         game_dict = {'price': str(value)}
                         game_dict_list.append(game_dict)
 
+
+
                 elif not value.startswith('-') and value.endswith('%'):
                     if len(game_dict_list) > 0 and 'rating' not in game_dict_list[-1]:
                         game_dict_list[-1]['rating'] = str(value)
                     else:
                         game_dict = {'rating': str(value)}
                         game_dict_list.append(game_dict)
+                    self.logger.info(game_dict)
 
         return json.dumps(game_dict_list)
-
-# scraper = WebScraper(url='https://steamdb.info/sales/').extract_soup_data()
-
-# print(scraper)
+    
