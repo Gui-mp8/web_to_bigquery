@@ -34,7 +34,8 @@ O objetivo deste projeto é a extração de dados de um site de venda de jogos p
 <h3>
 
 - Python
-  - It's necessary a version between 3.7 - 3.10, you can check the versions in this link : https://www.python.org/downloads/ or if you already has python, you can check the version passing this code
+  - é necessário ter uma versão do Python entre 3.7 - 3.10, é possível fazer download de uma dessas versões por meio deste link : https://www.python.org/downloads/ ou se o Python já estiver instalado, basta checar a versão usando o código abaixo.
+<p></p>
 
   ```
   python -V
