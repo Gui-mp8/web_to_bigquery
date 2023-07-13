@@ -172,3 +172,11 @@ Há um pequeno problema relacionado ao header. Para cada IP o header é trocado,
 3 - Os dados são exportados para o Bigquery
 
 </h3>
+
+<h2>Resultado final</h2>
+<h3>
+
+Pode ser visto neste link: 
+- https://docs.google.com/spreadsheets/d/1FVfWs_nONI-t6PqKWe6BdQ8gBiERUFQ5xSk7T2ASHqI/edit#gid=0
+
+</h3>
