@@ -76,5 +76,6 @@ class BigQuery():
         # Check if the table has existing data
         if self.is_table_empty(table_ref):
             self.client.insert_rows_json(table_ref, rows)
+            self.logger.info("All data inserted.")
         else:
             self.logger.info("Table already has data. Skipping insertion.")
