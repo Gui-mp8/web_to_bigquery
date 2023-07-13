@@ -27,9 +27,9 @@ class WebScraper():
         self.url = url
         self.session = None
         self.headers = {
-            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-            "cookie": "cf_chl_2=0f811a9aa1e21cc; cf_clearance=W5hoD.mM4zzqMAMgk1IutY3NkRv0flJp1ro6zd9cKQM-1689161684-0-160; __cf_bm=2RWpCjNQjXgiKKF7PQelB8fDQgvXeIr4ncKtOPIYrX0-1689164681-0-AeKP7HJ5WShG2VnaFmHwCtcGDKlbhU+lHZlY+wu4m7xcKYbJC/RmkIoBgGobHa5mqQ7lsowjjRvDbWcOqaa2Tw0=",
-            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 OPR/95.0.0.0"
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "cookie": "cf_clearance=k4R7jAe2EKTktPjEgATVzuehYw.SHgoYKYO8aL7It6s-1689216169-0-160; __cf_bm=AC16fBICbYUwSK.G.ce9sRT0I0KQ62fD1GdU4_AcI00-1689217358-0-AZhkYuQPFWxQz/Om1JR4Z9KvKdgsZSaYP9NruJChDHglGOt/E4jI3aRzn/rqtbOJtOmcjKHb9HisZBZk9R1JvJs=",
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
         }
         self.logger = logging.getLogger(__name__)
 
@@ -47,11 +47,6 @@ class WebScraper():
 
         return session
 
-    # def random(self):
-    #     self.headers['User-Agent'] = random.choice(self.user_agents)
-    #     print(self.headers)
-    #     return self.headers
-
     def response(self) -> requests.Response:
         return self.create_session().get(url=self.url, headers=self.headers)
 
@@ -59,45 +54,19 @@ class WebScraper():
         return BeautifulSoup(self.response().content, 'html.parser')
 
     def extract_soup_data(self) -> List[Dict[str, Any]]:
-        items = self.soup().find_all('td')
+        data_sort_keys = ['game_name','discount', 'price', 'rating', 'end_date', 'start_date', 'release_date']
 
-        game_dict_list = []
+        blocks = self.soup().find_all('tr', class_='app')
+        data_list = []
 
-        for item in items:
-            game_name = item.find('a', class_='b')
+        for block in blocks:
+            data_sort_values = block.find_all('td', {'data-sort': True})
 
-            if game_name is not None and game_name['target'] == '_blank':
-                game_dict = {'game_name': str(game_name.string)}  # Create a new dictionary for each game
-                game_dict_list.append(game_dict)  # Append the dictionary to the list
+            game_name_tag = block.find('a', class_='b')
+            game_name = game_name_tag.get_text()
 
-            elif 'data-sort' in item.attrs:
-                value = item.get_text(strip=True)
+            data_sort_dict = dict(zip(data_sort_keys, [game_name] + [tag['data-sort'] for tag in data_sort_values][-6:]))
+            data_list.append(data_sort_dict)
+            self.logger.info(data_sort_dict)
 
-                if value.startswith('-') and value.endswith('%'):
-                    if len(game_dict_list) > 0 and 'discount' not in game_dict_list[-1]:
-                        game_dict_list[-1]['discount'] = str(value)
-                    else:
-                        game_dict = {'discount': str(value)}
-                        game_dict_list.append(game_dict)
-
-
-
-                elif value.startswith('R$'):
-                    if len(game_dict_list) > 0 and 'price' not in game_dict_list[-1]:
-                        game_dict_list[-1]['price'] = str(value)
-                    else:
-                        game_dict = {'price': str(value)}
-                        game_dict_list.append(game_dict)
-
-
-
-                elif not value.startswith('-') and value.endswith('%'):
-                    if len(game_dict_list) > 0 and 'rating' not in game_dict_list[-1]:
-                        game_dict_list[-1]['rating'] = str(value)
-                    else:
-                        game_dict = {'rating': str(value)}
-                        game_dict_list.append(game_dict)
-                    self.logger.info(game_dict)
-
-        return json.dumps(game_dict_list)
-    
+        return json.dumps(data_list)
