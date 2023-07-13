@@ -21,6 +21,7 @@ from requests.sessions import Session
 from bs4 import BeautifulSoup
 import json
 from typing import Dict, List, Any
+from datetime import datetime
 
 class WebScraper():
     def __init__(self, url: str) -> None:
@@ -54,7 +55,7 @@ class WebScraper():
         return BeautifulSoup(self.response().content, 'html.parser')
 
     def extract_soup_data(self) -> List[Dict[str, Any]]:
-        data_sort_keys = ['game_name','discount', 'price', 'rating', 'end_date', 'start_date', 'release_date']
+        data_sort_keys = ['game_name','discount', 'price', 'rating', 'end_date', 'start_date', 'release_date', 'extract_date']
 
         blocks = self.soup().find_all('tr', class_='app')
         data_list_dict = []
@@ -65,7 +66,9 @@ class WebScraper():
             game_name_tag = block.find('a', class_='b')
             game_name = game_name_tag.get_text()
 
-            data_sort_dict = dict(zip(data_sort_keys, [game_name] + [tag['data-sort'] for tag in data_sort_values][-6:]))
+            extract_date = datetime.now().strftime("%Y-%m-%d")  # Get the current date
+
+            data_sort_dict = dict(zip(data_sort_keys, [game_name] + [tag['data-sort'] for tag in data_sort_values][-6:] + [extract_date]))
             data_list_dict.append(data_sort_dict)
             self.logger.info(data_sort_dict)
 

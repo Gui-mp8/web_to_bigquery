@@ -47,7 +47,8 @@ class BigQuery():
             bigquery.SchemaField("rating", "STRING", mode="REQUIRED"),
             bigquery.SchemaField("end_date", "STRING", mode="REQUIRED"),
             bigquery.SchemaField("start_date", "STRING", mode="REQUIRED"),
-            bigquery.SchemaField("release_date", "STRING", mode="REQUIRED")
+            bigquery.SchemaField("release_date", "STRING", mode="REQUIRED"),
+            bigquery.SchemaField("extract_date", "STRING", mode="REQUIRED")
         ]
         table_path = bigquery.Table(self.table_id, schema=schema)
 
