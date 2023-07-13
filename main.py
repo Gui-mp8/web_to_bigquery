@@ -1,10 +1,11 @@
 from models.bigquery import BigQuery
 from models.web_scraper import WebScraper
+from models.etl import transforming_json
 import os
 
 def main(project_name, dataset_name, table_name):
     json_data = WebScraper(url='https://steamdb.info/sales/').extract_soup_data()
-
+    json_data = transforming_json(json_data)
     bq = BigQuery(project_name, dataset_name, table_name)
     bq.create_dataset()
     bq.create_table()
