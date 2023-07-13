@@ -57,7 +57,7 @@ class WebScraper():
         data_sort_keys = ['game_name','discount', 'price', 'rating', 'end_date', 'start_date', 'release_date']
 
         blocks = self.soup().find_all('tr', class_='app')
-        data_list = []
+        data_list_dict = []
 
         for block in blocks:
             data_sort_values = block.find_all('td', {'data-sort': True})
@@ -66,7 +66,18 @@ class WebScraper():
             game_name = game_name_tag.get_text()
 
             data_sort_dict = dict(zip(data_sort_keys, [game_name] + [tag['data-sort'] for tag in data_sort_values][-6:]))
-            data_list.append(data_sort_dict)
+            data_list_dict.append(data_sort_dict)
             self.logger.info(data_sort_dict)
 
-        return json.dumps(data_list)
+        # return json.dumps(data_list)
+        return data_list_dict
+
+# from datetime import datetime
+# json_data = WebScraper(url='https://steamdb.info/sales/').extract_soup_data()
+# for item in json_data:
+#     item['price'] = item['price'][:-2] + '.' + item['price'][-2:]
+#     item['end_date'] = datetime.fromtimestamp(int(item['end_date'])).strftime('%Y-%m-%d')
+#     item['start_date'] = datetime.fromtimestamp(int(item['start_date'])).strftime('%Y-%m-%d')
+#     item['release_date'] = datetime.fromtimestamp(int(item['release_date'])).strftime('%Y-%m-%d')
+
+# print(json_data)
