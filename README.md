@@ -3,10 +3,12 @@
 <h2>Sobre:</h2 >
 
 <p>
+<h3>
 O objetivo deste projeto é a extração de dados de um site de venda de jogos para o BigQuery, onde os dados poderão ser analisados.
+</he>
 </p>
 
-#
+
 
 <h2>Tecnologias:</h2>
 
@@ -25,7 +27,7 @@ O objetivo deste projeto é a extração de dados de um site de venda de jogos p
     </tr>
   </table>
 
-#
+
 
 <h2>Pré-requisitos:</h2 >
 
@@ -80,7 +82,7 @@ https://cloud.google.com/data-fusion/docs/how-to/granting-service-account-permis
 
 <p></p>
 
-#
+
 
 <h2>Criando o ambiente Python:</h2>
 <p>
@@ -106,25 +108,25 @@ pip install -r requirements.txt
 - **sample_config**:
   - Este arquivo serve como referência para a chave de acesso que deve ser extraída. Após extrair a chave, coloque-a na pasta principal e renomeie-a para config.json.
 
-#
 
-<h2>Setting the main.py file</h2 >
+
+<h2>Configurando o arquivo main.py</h2 >
 
 <p>
   <h3>
-  After setting all the enviroment's you can start the setting the main.py file.
+  Depois de configurar todo o ambiente, pode começar a configurar o arquivo main.py.
   </h3>
 </p>
 
 <p>
   <h3>
-  Let's open the main.py and understand how it's works
+  Vamos abrir o arquivo main.py para entendermos o que modificar
   </h3>
 </p>
 
 <p>
   <h3>
-  Variables:
+  Variáveis:
 </h3>
 
 - **project_name** = Bote o nome do projeto que foi criado no BigQuery para esta aplicacao
@@ -133,9 +135,9 @@ pip install -r requirements.txt
 
 - **table_name** = Defina o nome de uma tabela de sua escolha
 
-#
 
-<h2>Running main.py</h2 >
+
+<h2>Rodando o main.py</h2 >
 
 <p>
   <h3>
@@ -147,7 +149,26 @@ pip install -r requirements.txt
   </h3>
 </p>
 
-#
 
-<h2>Fluxo do processo</h2>
 
+<h2>Erros</h2 >
+
+<h3>
+Há um pequeno problema relacionado ao header. Para cada IP o header é trocado, entao, para que o código flua, é necessário modificar o header de acordo com o que está disponível no devtools do site.
+</h3>
+
+
+
+<h2>Workflow</h2>
+
+![steam-summer-sale-2023-2](https://github.com/Gui-mp8/web_to_bigquery/assets/94998733/9b4dc91c-2420-45f9-a02b-c7501df99cf8)
+
+<h3>
+
+1 - Dados são coletados do site https://steamdb.info/sales/
+
+2 - Dados são tratados pelo arquivo etl.py
+
+3 - Os dados são exportados para o Bigquery
+
+</h3>
