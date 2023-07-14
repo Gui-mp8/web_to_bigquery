@@ -151,10 +151,10 @@ pip install -r requirements.txt
 
 
 
-<h2>Erros</h2 >
+<h2>Erro</h2 >
 
 <h3>
-Há um pequeno problema relacionado ao header. Para cada IP o header é trocado, entao, para que o código flua, é necessário modificar o header de acordo com o que está disponível no devtools do site.
+O site usa captcha, sendo assim, o cokie no header tera sempre que ser renovado.
 </h3>
 
 
@@ -176,7 +176,7 @@ Há um pequeno problema relacionado ao header. Para cada IP o header é trocado,
 <h2>Resultado final</h2>
 <h3>
 
-Pode ser visto neste link: 
+Pode ser visto neste link:
 - https://docs.google.com/spreadsheets/d/1FVfWs_nONI-t6PqKWe6BdQ8gBiERUFQ5xSk7T2ASHqI/edit#gid=0
 
 </h3>
