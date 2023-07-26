@@ -1,28 +1,16 @@
-import logging
-
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s [%(levelname)s] %(message)s',
-    handlers=[
-        logging.FileHandler('app.log'),
-        logging.StreamHandler()
-    ]
-)
-
-# Create a logger instance
-logger = logging.getLogger(__name__)
-
 from google.cloud import bigquery
 import json
 from typing import Dict, Any
 
+from big_query.big_query_config import BigQueryConfig
+from logger.logger import Loggador
+
 class BigQuery():
-    def __init__(self, project_name:str, dataset_name:str, table_name:str) -> None:
+    def __init__(self, big_query_config: BigQueryConfig, logger: Loggador) -> None:
         self.client = bigquery.Client()
-        self.dataset_id = f"{project_name}.{dataset_name}"
-        self.table_id = f"{project_name}.{dataset_name}.{table_name}"
-        self.logger = logging.getLogger(__name__)
+        self.dataset_id = f"{big_query_config.project_name}.{big_query_config.dataset_name}"
+        self.table_id = f"{big_query_config.project_name}.{big_query_config.dataset_name}.{big_query_config.table_name}"
+        self.logger = logger
 
     def create_dataset(self) -> bigquery.Dataset:
         try:
