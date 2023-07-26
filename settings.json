@@ -1,0 +1,12 @@
+{
+    "steamdb_client_config": {
+        "cf_clearance": "WTHnqMqt_z0dUpC85gTcteLR89NIlwMSo1TAuo6bMkI-1690250451-0-160.0.0",
+        "cf_bm": "IlMsrXpXfnNXiZJhhuDzv1KwDwpwv606uDIS1AwE.Uc-1690250459-0-AYB+6ftLQRQaZSWc8q+RBjTjfy2TYqWo1pXKahFcyKIEC6D3L/ZGDHevdDRdDV+OYqPjxfGxqOpSMt+BM0UOOIg=",
+        "cf_chl_2": "b9b4fb855450cbc"
+    },
+    "bigdata_settings": {
+        "project_name": "summer-sales-extraction1",
+        "dataset_name": "summer_sales_data",
+        "table_name": "tn_sales_2023"
+    }
+}
